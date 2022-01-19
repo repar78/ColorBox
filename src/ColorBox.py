@@ -6,6 +6,7 @@ Created on Sun May  2 14:58:26 2021
 
 برنامه جعبه رنگ - نوشته سیدرضا موسوی
 در انجام هر تغییری آزاد هستید تا وقتی که این نوشته ها را تکرار کنید
+
 """
 
 from datetime import datetime
@@ -14,40 +15,45 @@ import pygame
 import math
 import sys
 
-def setText(win, text, loc, color=(255, 0, 0),
+def setText(window, text, loc, color=(255, 0, 0),
               font="Comic Sans MS", size=50):
-    textfont = pygame.font.SysFont(font, size)
-    text_ = textfont.render(text, True, color)
-    text_loc = text_.get_rect()
-    text_loc.center = loc
-    win.blit(text_, text_loc)
+    textFont = pygame.font.SysFont(font, size)
+    textRender = textFont.render(text, True, color)
+    textLoc = textRender.get_rect()
+    textLoc.center = loc
+    window.blit(textRender, textLoc)
 
 
-def location(num, loc="Start", size=10, center=(400, 300), 
-             r=270, teta=(math.pi/30)):
-    x = center[0] + r*math.sin(num*teta)
-    y = (center[1]-r) + r*(1-math.cos(num*teta))
-    if loc.lower() == "stop":
-        x = x - size*math.sin(num*teta)
-        y = y + size*math.cos(num*teta)
+def location(number, where="First", size=10, center=(400, 300), 
+             radius=270, angle=(math.pi/30)):
+    x = center[0] + radius*math.sin(number * angle)
+    y = (center[1] - radius) + radius*(1 - math.cos(number * angle))
+    if where.lower() == "end":
+        x = x - size*math.sin(number * angle)
+        y = y + size*math.cos(number * angle)
     return (x, y)
 
 
-def setClockLines(win, mode, color, k, r=270):
+def setClockLines(window, mode, color, width, radius=270):
     if mode.lower() == "secounds":
-        for i in range(60):
-            if i%5 == 0:
+        for number in range(60):
+            if number % 5 == 0:
                 continue
-            pygame.draw.line(win, color, location(i, r=r), location(i, loc="stop", r=r, size=2), k)
+            firstLoc = location(number, radius=radius)
+            endLoc = location(number, where="end", radius=radius, size=2)
+            pygame.draw.line(window, color, firstLoc, endLoc, width)
     if mode.lower() == "numbers":
-        for i in range(60):
-            if i%5 == 0:
-                pygame.draw.line(win, color, location(i, r=r), location(i, loc="stop", r=r, size=7), k)
+        for number in range(60):
+            if number % 5 == 0:
+                firstLoc = location(number, radius=radius)
+                endLoc = location(number, where="end", radius=radius, size=7)
+                pygame.draw.line(window, color, firstLoc, endLoc, width)
 
 
-def changeColor(backcolor, numcolor, step= 1):
-    color = [
-        [(255, 255, 255), (0, 0, 0)],
+colorIndex = 0
+
+def changeColor(step=1):
+    colors = [
         [(0, 0, 0), (255, 255, 255)],
         [(252, 246, 245), (153, 0, 17)],
         [(153, 0, 17), (252, 246, 245)],
@@ -111,15 +117,18 @@ def changeColor(backcolor, numcolor, step= 1):
         [(189, 127, 55), (161, 57, 65)],
         [(255, 6, 0), (0, 35, 156)],
         [(0, 35, 156), (255, 6, 0)],
+        [(255, 255, 255), (0, 0, 0)]
         ]
-    for i in range(len(color)):
-        if backcolor == color[i][0]:
-            if numcolor == color[i][1]:
-                count = i
-    if count+step == len(color):
-        return color[0]
+    
+    global colorIndex
+    next = colorIndex + step
+    if next == len(colors):
+        colorIndex = 0
+    elif next == -len(colors) - 1:
+        colorIndex = -1
     else:
-        return color[count+step]
+        colorIndex = next
+    return colors[colorIndex]
 
 
 def checkAlarm(hour, minute):
@@ -129,14 +138,14 @@ def checkAlarm(hour, minute):
     return False
 
 def sendNotif(check, text, alarmkey):
-    notifi = Notify()
-    notifi.message = text
-    notifi.title = "Alarm"
-    notifi.application_name = "Color Box"
-    notifi.icon = "./files/logo.png"
-    #notifi.audio = "Timer.wav"
+    notification = Notify()
+    notification.message = text
+    notification.title = "Alarm"
+    notification.application_name = "Color Box"
+    notification.icon = "./files/logo.png"
+    # notification.audio = "Timer.wav"
     if check and alarmkey:
-        notifi.send()
+        notification.send()
         return True
     return False
 
@@ -144,37 +153,29 @@ def sendNotif(check, text, alarmkey):
 # Size
 width = 800
 hight = 600
-r = 270
+radius = 270
 
 # Alarm
 alarmkey = False
-ralarm = r/3
+alarmRadius = radius / 3
 alarmminute = 0
 alarmhour = 0
-x_minute_alarm = 0
-y_minute_alarm = 0
-x_hour_alarm = 0
-y_hour_alarm = 0
 
 # Show     
-showalarm = 0
-showalarmcount = 0
+showalarm = False
 
-showclockcount = 1
-showclocktext = 1
+showclocktext = True
 timetextsize = 20
 
-showdatecount = 0
-showdatetext = 1
-showweekcount = 0
-showweektext = 1
+showdatetext = True
+showweektext = True
 
 # Windows
 pygame.init()
-win = pygame.display.set_mode((width, hight))
+window = pygame.display.set_mode((width, hight))
 pygame.display.set_caption("Color Box")
-gameicon = pygame.image.load("./files/logo.png")
-pygame.display.set_icon(gameicon)
+iconFile = pygame.image.load("./files/logo.png")
+pygame.display.set_icon(iconFile)
 
 # Fonts
 font1 = "Freestyle Script"
@@ -206,43 +207,35 @@ clockcolor = white
 numbercolor = clockcolor
 
 # Location
-x_center = width/2
-y_center = hight/2
+xCenter = width / 2
+yCenter = hight / 2
 
-x_secund_line = x_center
-y_secund_line = y_center - r
-x_minute_line = x_center
-y_minute_line = y_center - r
-x_hour_line = x_center
-y_hour_line = y_center - r
+xSecundLine = xCenter
+ySecundLine = yCenter - radius
+xMinuteLine = xCenter
+yMinuteLine = yCenter - radius
+xHourLine = xCenter
+yHourLine = yCenter - radius
 
 # 1/12
-(x1, y1) = location(5)
-(x2, y2) = location(10)
-(x3, y3) = location(15)
-(x4, y4) = location(20)
-(x5, y5) = location(25)
-(x6, y6) = location(30)
-(x7, y7) = location(35)
-(x8, y8) = location(40)
-(x9, y9) = location(45)
-(x10, y10) = location(50)
-(x11, y11) = location(55)
-(x12, y12) = location(0)
+
+numLoc = []
+for number in range(0, 60, 5):
+    numLoc.append(location(number))
 
 # Main
 while True:
     # Backgrund
-    win.fill(backgrundcolor)
+    window.fill(backgrundcolor)
     #pygame.draw.circle(win, clockcolor, (width/2, hight/2), r, 1)
     #pygame.draw.circle(win, yellow, (width/2, hight/2), (2*r)/3, 1)
     
     # Clock
     time = datetime.now()
-    t_clock = math.pi/30
-    tsecund = time.second*t_clock + (time.microsecond/1000000)*(2*math.pi)/60
-    tminute = time.minute*t_clock + ((time.second*1000000+time.microsecond)/60000000)*(2*math.pi)/60
-    thour = time.hour*5*t_clock + ((time.minute*60+time.second)/720)*t_clock
+    everySecondAngle = math.pi / 30
+    secondAngle = time.second*everySecondAngle + (time.microsecond/1000000) * (2*math.pi) /60
+    minuteAngle = time.minute*everySecondAngle + ((time.second*1000000 + time.microsecond) / 60000000) * (2*math.pi) / 60
+    hourAngle = time.hour*5*everySecondAngle + ((time.minute*60 + time.second) / 720) * everySecondAngle
     
     # Keys
     for event in pygame.event.get():
@@ -254,11 +247,11 @@ while True:
                 alarmhour = 0
                 alarmminute = 0
                 alarmkey = False
-                setText(win, "It's Ok", (x_center, y_center),
-                        color=(255, 0, 0), font=font4, size = 50)
+                setText(window, "It's Ok", (xCenter, yCenter),
+                        color=(255, 0, 0), font=font4, size=50)
             if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
                 alarmkey = True
-                setText(win, "It's Ready", (x_center, y_center),
+                setText(window, "It's Ready", (xCenter, yCenter),
                         color=(255, 0, 0), font=font4, size=50)
             if event.key == pygame.K_UP:
                 alarmhour += 1
@@ -269,72 +262,65 @@ while True:
             if event.key == pygame.K_LEFT:
                 alarmminute -= 1
             if event.key == pygame.K_n:
-                showdatecount += 1
-                if showdatecount%2 == 1:
-                    showdatetext = 0
+                if showdatetext:
+                    showdatetext = False
                 else:
-                    showdatetext = 1
+                    showdatetext = True
             if event.key == pygame.K_v:
-                showweekcount += 1
-                if showweekcount%2 == 1:
-                    showweektext = 0
+                if showweektext:
+                    showweektext = False
                 else:
-                    showweektext = 1
+                    showweektext = True
             if event.key == pygame.K_b:
-                showclockcount += 1
-                if showclockcount%2 == 1:
-                    showclocktext = 0
-                    showdatetext = 0
-                    showweektext = 0
+                if showclocktext:
+                    showclocktext = False
+                    showdatetext = False
+                    showweektext = False
                     timetextsize = 10
                 else:
-                    showclocktext = 1
-                    showdatetext = 1
-                    showweektext = 1
+                    showclocktext = True
+                    showdatetext = True
+                    showweektext = True
                     timetextsize = 20
             if event.key == pygame.K_SPACE:
-                showalarmcount += 1
-                if showalarmcount%2 == 1:
-                    showclocktext = 0
-                    showdatetext = 0
-                    showweektext = 0
-                    showalarm = 1
+                if not showalarm:
+                    showclocktext = False
+                    showdatetext = False
+                    showweektext = False
+                    showalarm = True
                     timetextsize = 10
                     numbercolorold = numbercolor
                     numbercolor = blue
                     clockcolor = green
                 else:
-                    showalarm = 0
-                    showclocktext = 1
-                    showdatetext = 1
-                    showweektext = 1
+                    showalarm = False
+                    showclocktext = True
+                    showdatetext = True
+                    showweektext = True
                     timetextsize = 20
                     numbercolor = numbercolorold
                     clockcolor = numbercolorold
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                backgrundcolor, clockcolor = changeColor(backgrundcolor,
-                                                        clockcolor)
+                backgrundcolor, clockcolor = changeColor()
                 numbercolor = clockcolor
             if event.button == 3:
-                backgrundcolor, clockcolor = changeColor(backgrundcolor,
-                                                        clockcolor, step=-1)
+                backgrundcolor, clockcolor = changeColor(step=-1)
                 numbercolor = clockcolor
     if showalarm:
         # Alarm
-        setClockLines(win, "numbers", yellow, 4, r=ralarm) # Line Number
-        setClockLines(win, "secounds", yellow, 2, r=ralarm) # Secund Lines
-        setText(win, "Alarm Clock", (width/2, hight/2-20),
-                color=yellow, size=15, font=font5)
+        setClockLines(window, "numbers", yellow, 4, radius=alarmRadius) # Number Lines
+        setClockLines(window, "secounds", yellow, 2, radius=alarmRadius) # Secund Lines
+        setText(window, "Alarm Clock", (width / 2, hight/2 - 20), color=yellow, size=15, font=font5)
         
-        x_minute_alarm = x12 + ralarm*math.sin(alarmminute*t_clock)
-        y_minute_alarm = y_center - ralarm*math.cos(alarmminute*t_clock)
-        pygame.draw.aaline(win, pink, (x_center, y_center),
-                               (x_minute_alarm, y_minute_alarm), 1)
-        x_hour_alarm = x12 + (2*ralarm/3)*math.sin(alarmhour*5*t_clock)
-        y_hour_alarm = y_center - (2*ralarm/3)*math.cos(alarmhour*5*t_clock)
-        pygame.draw.aaline(win, cyan, (x_center, y_center),
-                               (x_hour_alarm, y_hour_alarm), 1)
+        xMinuteAlarm = numLoc[0][0] + alarmRadius*math.sin(alarmminute * everySecondAngle)
+        yMinuteAlarm = yCenter - alarmRadius*math.cos(alarmminute * everySecondAngle)
+        pygame.draw.aaline(window, pink, (xCenter, yCenter), (xMinuteAlarm, yMinuteAlarm), 1)
+        
+        xHourAlarm = numLoc[0][0] + (2 * alarmRadius / 3)*math.sin(alarmhour * 5*everySecondAngle)
+        yHourAlarm = yCenter - (2 * alarmRadius / 3)*math.cos(alarmhour * 5*everySecondAngle)
+        pygame.draw.aaline(window, cyan, (xCenter, yCenter), (xHourAlarm, yHourAlarm), 1)
+        
         if alarmhour > 23:
             alarmhour = 0
         if alarmminute > 59:
@@ -343,78 +329,70 @@ while True:
             alarmminute = 59
         if alarmhour < 0:
             alarmhour = 23
-        setText(win, str(alarmhour)+":"+str(alarmminute), (x_center,y_center+20),
+        setText(window, str(alarmhour) + ":" + str(alarmminute), (xCenter, yCenter+20),
                 size=20, color=yellow, font=font4)
     
     # Me Text 
-    setText(win, "Mousavi", (width/2, hight/2-r/2), 
-              color=numbercolor, size=10)
-    # اجازه تغییر این بخش را ندارید
-    setText(win, "@IamRezaMousavi", (width-50, hight-6), 
+    setText(window, "Mousavi", (width / 2, hight/2 - radius/2), 
               color=numbercolor, size=10)
     # Time Text
-    setText(win, time.strftime("%H:%M:%S"), (width/2, hight/2+r/2),
+    setText(window, time.strftime("%H:%M:%S"), (width / 2, hight/2 + radius/2),
             color=numbercolor, size=timetextsize)
     if showdatetext:
         # Date Text
-        setText(win, time.strftime("%B %d"),
-                (width/2+r/2, hight/2),
+        setText(window, time.strftime("%B %d"), (width/2 + radius/2, hight / 2),
                 color=numbercolor, font=font9, size=30)
     if showweektext:
         # Week Text
-        setText(win, time.strftime("%A"),
-                (width/2-r/2, hight/2),
+        setText(window, time.strftime("%A"), (width/2 - radius/2, hight / 2),
                 color=numbercolor, font=font9, size=30)
     if showclocktext:
         # Numbers Texts 
-        setText(win, "", (x1-25, y1+25),
+        setText(window, "", (numLoc[1][0] - 25, numLoc[1][1] + 25),
                 color=numbercolor, font=font3, size=30)
-        setText(win, "", (x2-25, y2+15),
+        setText(window, "", (numLoc[2][0] - 25, numLoc[2][1] + 15),
                 color=numbercolor, font=font3, size=30)
-        setText(win, "3", (x3-25, y3), color=numbercolor, font=font13, size=60)
-        setText(win, "IV", (x4-25, y4-15),
+        setText(window, "3", (numLoc[3][0] - 25, numLoc[3][1]), color=numbercolor, font=font13, size=60)
+        setText(window, "IV", (numLoc[4][0] - 25, numLoc[4][1] - 15),
                 color=numbercolor, font=font10, size=30)
-        setText(win, "V", (x5-15, y5-25),
+        setText(window, "V", (numLoc[5][0] - 15, numLoc[5][1] - 25),
                 color=numbercolor, font=font10, size=30)
-        setText(win, "VI", (x6, y6-25),
+        setText(window, "VI", (numLoc[6][0], numLoc[6][1] - 25),
                 color=numbercolor, font=font10, size=60)
-        setText(win, "", (x7+15, y7-25), color=numbercolor)
-        setText(win, "", (x8+25, y8-15),
+        setText(window, "", (numLoc[7][0] + 15, numLoc[7][1] - 25), color=numbercolor)
+        setText(window, "", (numLoc[8][0] + 25, numLoc[8][1] - 15),
                 color=numbercolor, font=font3, size=30)
-        setText(win, "NINE", (x9+25, y9),
+        setText(window, "NINE", (numLoc[9][0] + 25, numLoc[9][1]),
                 color=numbercolor, font=font3, size=50)
-        setText(win, "TEN", (x10+25, y10+15),
+        setText(window, "TEN", (numLoc[10][0] + 25, numLoc[10][1] + 15),
                 color=numbercolor, font=font3, size=30)
-        setText(win, "ELEVEN", (x11+25, y11+25),
+        setText(window, "ELEVEN", (numLoc[11][0] + 25, numLoc[11][1] + 25),
                 color=numbercolor, font=font3, size=30)
-        setText(win, "12", (x12, y12+25),
+        setText(window, "12", (numLoc[0][0], numLoc[0][1] + 25),
                 color=numbercolor, font=font3, size=60)
         
-    setClockLines(win, "numbers", numbercolor, 4) # Line Number
-    setClockLines(win, "secounds", numbercolor, 2) # Secund Lines
+    setClockLines(window, "numbers", numbercolor, 4) # Line Number
+    setClockLines(window, "secounds", numbercolor, 2) # Secund Lines
     
     # Lines
-    pygame.draw.aaline(win, red, (x_center, y_center),
-                           (x_secund_line, y_secund_line), 4)
-    pygame.draw.aaline(win, clockcolor, (x_center, y_center),
-                           (x_minute_line, y_minute_line), 4)
-    pygame.draw.aaline(win, clockcolor, (x_center, y_center),
-                           (x_hour_line, y_hour_line), 4)
+    pygame.draw.aaline(window, red, (xCenter, yCenter), (xSecundLine, ySecundLine), 4)
+    pygame.draw.aaline(window, clockcolor, (xCenter, yCenter), (xMinuteLine, yMinuteLine), 4)
+    pygame.draw.aaline(window, clockcolor, (xCenter, yCenter), (xHourLine, yHourLine), 4)
     
-    x_secund_line = x12 + r*math.sin(tsecund)
-    y_secund_line = y_center - r*math.cos(tsecund)
+    xSecundLine = numLoc[0][0] + radius*math.sin(secondAngle)
+    ySecundLine = yCenter - radius*math.cos(secondAngle)
     
-    x_minute_line = x12 + r*math.sin(tminute)
-    y_minute_line = y_center - r*math.cos(tminute)
+    xMinuteLine = numLoc[0][0] + radius*math.sin(minuteAngle)
+    yMinuteLine = yCenter - radius*math.cos(minuteAngle)
     
-    x_hour_line = x12 + (2*r/3)*math.sin(thour)
-    y_hour_line = y_center - (2*r/3)*math.cos(thour)
+    xHourLine = numLoc[0][0] + (2*radius/3)*math.sin(hourAngle)
+    yHourLine = yCenter - (2*radius/3)*math.cos(hourAngle)
 
     if alarmkey:
         alarm = sendNotif(checkAlarm(alarmhour, alarmminute), "Ding Ding", alarmkey)
         if alarm:
-            setText(win, "Alarm", (x_center, y_center),
-                    color = (255, 0, 0), font=font4, size=150)
+            setText(window, "Alarm", (xCenter, yCenter),
+                    color=(255, 0, 0), font=font4, size=150)
     
     pygame.display.update()
 
