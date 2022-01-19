@@ -1,0 +1,5 @@
+colorama==0.4.4
+loguru==0.5.3
+notify-py==0.3.3
+pygame==2.1.2
+win32-setctime==1.0.4
