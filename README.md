@@ -48,8 +48,8 @@ ___
 ## Setup Windows
 Open CMD or PowerShell in the folder and type:
 ```
-> virtualenv env
-> \env\Scripts\activate.bat
+> virtualenv venv
+> \venv\Scripts\activate.bat
 > pip install -r requeriments.txt
 > python src\ColorBox.py
 ```
@@ -57,8 +57,8 @@ ___
 ## Setup Linux
 To be able to run it you have to open the terminal in the folder and type:
 ```
-$ virtualenv env
-$ source env/bin/activate
+$ virtualenv venv
+$ source venv/bin/activate
 $ pip3 install -r requeriments.txt
 $ python3 src/ColorBox.py
 ```
@@ -72,7 +72,7 @@ ___
 3. دکمه فاصله باعث پیدا شدن یا قایم کردن ساعت آلارم میشود
 4. با دکمه‌های جهت بالا پایین میتوانید ساعت آلارم را تغییر دهید
 5. با دکمه‌های جهت راست و چپ میتوانید دقیقه آلارم را تغییر دهید
-6. با دکمه اینتر ساعت تنظیم میشود و با دکمه پاک کردن آلارم خاموش و صفر میشود
+6. با دکمه اینتر ساعت تنظیم میشود و با دکمه پاک کردن (backspace) آلارم خاموش و صفر میشود
 7. با دکمه b میتوان ساعت را خلوت کنید
 8. با دکمه n میتوان تاریخ را پاک یا نمایان کرد
 9. با دکمه v میتوان روزشمار را پاک یا نمایان کرد
