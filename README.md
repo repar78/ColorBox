@@ -1,31 +1,70 @@
 # Color Box
-__Color Box__ is a colorful analog clock,<br/>
+**Color Box** is a colorful analog clock,<br/>
 with 64 colors and _microsecond_ accuracy <br/>
 
 __A Clock without TIK-TAK__
 
-کالرباکس یک ساعت آنالوگ رنگارنگ،<br/>
-با 64 رنگ و دقت _میکرو ثانیه_ <br/>
+<div dir="rtl">
+جعبه رنگ، یک ساعت آنالوگ رنگارنگ،<br/>
+با 64 رنگ و دقت
+_میکروثانیه_
+
+<br/>
 
 __یک ساعت بدون تیک-تاک__
+</div>
 
+<br/>
+
+![Screenshot](Screenshot.gif)
+
+## Table of contents
+* [Support](#support)
+* [Licence](#Licence)
+* [Technologies](#technologies)
+* [Setup Windows](#setup-windows)
+* [Setup Linux](#setup-linux)
+* [Usage](#usage)
+* [Note](#note)
+
+___
+## Support
+If you used this project or learned something please give this project a star to keep doing open source projects
+
+___
 ## License
 Copyright &copy; 2021+ All rights reserved.
 
-## How To Run
-To run Color Box, just use steps below:
+___
+## Technologies
+Project is created with:
+* colorama==0.4.4
+* loguru==0.5.3
+* notify-py==0.3.3
+* pygame==2.1.2
+* win32-setctime==1.0.4
 
-In Windows:
-1. Just run _ColorBox.exe_
-
-Or:
-1. Install _Python3_, _pygame_, _notifypy_ in your system.
-2. Clone the project https://github.com/IamRezaMousavi/ColorBox.git
-3. Extract _ColorBox.rar_ file
-4. Go to _src_ folder
-5. Run _ColorBox.py_
-
+___
+## Setup Windows
+Open CMD or PowerShell in the folder and type:
+```
+> virtualenv env
+> \env\Scripts\activate.bat
+> pip install -r requeriments.txt
+> python src\ColorBox.py
+```
+___
+## Setup Linux
+To be able to run it you have to open the terminal in the folder and type:
+```
+$ virtualenv env
+$ source env/bin/activate
+$ pip3 install -r requeriments.txt
+$ python3 src/ColorBox.py
+```
+___
 ## Usage
+<div dir="rtl">
 دستورالعمل ساعت آنالوگ:
 
 1. کلیک چپ رنگ را عوض میکند
@@ -43,6 +82,8 @@ Or:
 برای خاموش کردن کافیه کلید پاک کردن (backspace) را بزنید
 
 توجه کنید برای تنظیم جدید باید یک بار دیگه اینتر را برای آلارم جدید فشار دهید
+</div>
 
+____
 ## Note
-linkedin Profile [Here](https://www.linkedin.com/in/iamrezamousavi)
+Linkedin Profile [Here](https://www.linkedin.com/in/iamrezamousavi)
