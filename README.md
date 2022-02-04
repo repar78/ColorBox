@@ -48,18 +48,18 @@ ___
 ## Setup Windows
 Open CMD or PowerShell in the folder and type:
 ```
-> virtualenv venv
-> \venv\Scripts\activate.bat
-> pip install -r requeriments.txt
+> virtualenv .venv
+> \.venv\Scripts\activate.bat
+> pip install -r requirements.txt
 > python src\ColorBox.py
 ```
 ___
 ## Setup Linux
 To be able to run it you have to open the terminal in the folder and type:
 ```
-$ virtualenv venv
-$ source venv/bin/activate
-$ pip3 install -r requeriments.txt
+$ virtualenv .venv
+$ source .venv/bin/activate
+$ pip3 install -r requirements.txt
 $ python3 src/ColorBox.py
 ```
 ___
