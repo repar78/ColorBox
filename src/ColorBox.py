@@ -232,10 +232,14 @@ while True:
     
     # Clock
     time = datetime.now()
+    second = time.second + time.microsecond*(10**-6)
+    minute = time.minute + second/60
+    hour = time.hour + minute/60
+    
     everySecondAngle = math.pi / 30
-    secondAngle = time.second*everySecondAngle + (time.microsecond/1000000) * (2*math.pi) /60
-    minuteAngle = time.minute*everySecondAngle + ((time.second*1000000 + time.microsecond) / 60000000) * (2*math.pi) / 60
-    hourAngle = time.hour*5*everySecondAngle + ((time.minute*60 + time.second) / 720) * everySecondAngle
+    secondAngle = second * everySecondAngle
+    minuteAngle = minute * everySecondAngle
+    hourAngle = hour * 5 * everySecondAngle
     
     # Keys
     for event in pygame.event.get():
