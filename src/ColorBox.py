@@ -16,8 +16,8 @@ import math
 import sys
 
 def setText(window, text, loc, color=(255, 0, 0),
-              font="Comic Sans MS", size=50):
-    textFont = pygame.font.SysFont(font, size)
+              font="./files/comic.ttf", size=50):
+    textFont = pygame.font.Font(font, size)
     textRender = textFont.render(text, True, color)
     textLoc = textRender.get_rect()
     textLoc.center = loc
@@ -178,18 +178,13 @@ iconFile = pygame.image.load("./files/logo.png")
 pygame.display.set_icon(iconFile)
 
 # Fonts
-font1 = "Freestyle Script"
-font2 = "Comic Sans MS"
-font3 = "Gigi"
-font4 = "Algerian"
-font5 = "MV Boli"
-font6 = "Segoe Print"
-font7 = "Arial Rounded MT Bold"
-font8 = "Forte"
-font9 = "Freestyle Script"
-font10 = "Viner Hand ITC"
-font12 = "Lucida Handwriting"
-font13 = "Segoe Print"
+defaultFont = "./files/comic.ttf"
+englishNumberFont = "./files/GIGI.ttf"
+romanNumberFont = "./files/VINERITC.ttf"
+numberThreeFont = "./files/segoepr.ttf"
+dateFont = "./files/FREESCPT.ttf"
+alarmTitleFont = "./files/mvboli.ttf"
+alarmClockFont = "./files/ALGER.ttf"
 
 # Color
 red = (255, 0, 0)
@@ -252,11 +247,11 @@ while True:
                 alarmminute = 0
                 alarmkey = False
                 setText(window, "It's Ok", (xCenter, yCenter),
-                        color=(255, 0, 0), font=font4, size=50)
+                        color=(255, 0, 0), font=alarmClockFont, size=50)
             if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
                 alarmkey = True
                 setText(window, "It's Ready", (xCenter, yCenter),
-                        color=(255, 0, 0), font=font4, size=50)
+                        color=(255, 0, 0), font=alarmClockFont, size=50)
             if event.key == pygame.K_UP:
                 alarmhour += 1
             if event.key == pygame.K_DOWN:
@@ -315,7 +310,7 @@ while True:
         # Alarm
         setClockLines(window, "numbers", yellow, 4, radius=alarmRadius) # Number Lines
         setClockLines(window, "secounds", yellow, 2, radius=alarmRadius) # Secund Lines
-        setText(window, "Alarm Clock", (width / 2, hight/2 - 20), color=yellow, size=15, font=font5)
+        setText(window, "Alarm Clock", (width / 2, hight/2 - 20), color=yellow, size=15, font=alarmTitleFont)
         
         xMinuteAlarm = numLoc[0][0] + alarmRadius*math.sin(alarmminute * everySecondAngle)
         yMinuteAlarm = yCenter - alarmRadius*math.cos(alarmminute * everySecondAngle)
@@ -334,7 +329,7 @@ while True:
         if alarmhour < 0:
             alarmhour = 23
         setText(window, str(alarmhour) + ":" + str(alarmminute), (xCenter, yCenter+20),
-                size=20, color=yellow, font=font4)
+                size=20, color=yellow, font=alarmClockFont)
     
     # Me Text 
     setText(window, "Mousavi", (width / 2, hight/2 - radius/2), 
@@ -345,35 +340,35 @@ while True:
     if showdatetext:
         # Date Text
         setText(window, time.strftime("%B %d"), (width/2 + radius/2, hight / 2),
-                color=numbercolor, font=font9, size=30)
+                color=numbercolor, font=dateFont, size=30)
     if showweektext:
         # Week Text
         setText(window, time.strftime("%A"), (width/2 - radius/2, hight / 2),
-                color=numbercolor, font=font9, size=30)
+                color=numbercolor, font=dateFont, size=30)
     if showclocktext:
         # Numbers Texts 
         setText(window, "", (numLoc[1][0] - 25, numLoc[1][1] + 25),
-                color=numbercolor, font=font3, size=30)
+                color=numbercolor, font=englishNumberFont, size=30)
         setText(window, "", (numLoc[2][0] - 25, numLoc[2][1] + 15),
-                color=numbercolor, font=font3, size=30)
-        setText(window, "3", (numLoc[3][0] - 25, numLoc[3][1]), color=numbercolor, font=font13, size=60)
+                color=numbercolor, font=englishNumberFont, size=30)
+        setText(window, "3", (numLoc[3][0] - 25, numLoc[3][1]), color=numbercolor, font=numberThreeFont, size=60)
         setText(window, "IV", (numLoc[4][0] - 25, numLoc[4][1] - 15),
-                color=numbercolor, font=font10, size=30)
+                color=numbercolor, font=romanNumberFont, size=30)
         setText(window, "V", (numLoc[5][0] - 15, numLoc[5][1] - 25),
-                color=numbercolor, font=font10, size=30)
+                color=numbercolor, font=romanNumberFont, size=30)
         setText(window, "VI", (numLoc[6][0], numLoc[6][1] - 25),
-                color=numbercolor, font=font10, size=60)
+                color=numbercolor, font=romanNumberFont, size=60)
         setText(window, "", (numLoc[7][0] + 15, numLoc[7][1] - 25), color=numbercolor)
         setText(window, "", (numLoc[8][0] + 25, numLoc[8][1] - 15),
-                color=numbercolor, font=font3, size=30)
+                color=numbercolor, font=englishNumberFont, size=30)
         setText(window, "NINE", (numLoc[9][0] + 25, numLoc[9][1]),
-                color=numbercolor, font=font3, size=50)
+                color=numbercolor, font=englishNumberFont, size=50)
         setText(window, "TEN", (numLoc[10][0] + 25, numLoc[10][1] + 15),
-                color=numbercolor, font=font3, size=30)
+                color=numbercolor, font=englishNumberFont, size=30)
         setText(window, "ELEVEN", (numLoc[11][0] + 25, numLoc[11][1] + 25),
-                color=numbercolor, font=font3, size=30)
+                color=numbercolor, font=englishNumberFont, size=30)
         setText(window, "12", (numLoc[0][0], numLoc[0][1] + 25),
-                color=numbercolor, font=font3, size=60)
+                color=numbercolor, font=englishNumberFont, size=60)
         
     setClockLines(window, "numbers", numbercolor, 4) # Line Number
     setClockLines(window, "secounds", numbercolor, 2) # Secund Lines
@@ -396,7 +391,7 @@ while True:
         alarm = sendNotif(checkAlarm(alarmhour, alarmminute), "Ding Ding", alarmkey)
         if alarm:
             setText(window, "Alarm", (xCenter, yCenter),
-                    color=(255, 0, 0), font=font4, size=150)
+                    color=(255, 0, 0), font=alarmClockFont, size=150)
     
     pygame.display.update()
 
