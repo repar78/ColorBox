@@ -332,7 +332,7 @@ while True:
                 size=20, color=yellow, font=alarmClockFont)
     
     # Me Text 
-    setText(window, "Mousavi", (width / 2, hight/2 - radius/2), 
+    setText(window, "@IamRezaMousavi", (width / 2, hight/2 - radius/2), 
               color=numbercolor, size=10)
     # Time Text
     setText(window, time.strftime("%H:%M:%S"), (width / 2, hight/2 + radius/2),
