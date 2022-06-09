@@ -25,7 +25,6 @@ __یک ساعت بدون تیک-تاک__
 * [Setup Windows](#setup-windows)
 * [Setup Linux](#setup-linux)
 * [Usage](#usage)
-* [Download](#download)
 * [Note](#note)
 
 ___
@@ -85,12 +84,6 @@ ___
 
 توجه کنید برای تنظیم جدید باید یک بار دیگه اینتر را برای آلارم جدید فشار دهید
 </div>
-
-___
-## Download
-To download executable file:
-
-* For Windows 7 or later [Click Here](https://drive.google.com/file/d/1iT42fFbxzICInRTVdH-bI5A4CzGUobRt/view?usp=sharing)
 
 ____
 ## Note
