@@ -38,18 +38,17 @@ Copyright &copy; 2021+ All rights reserved.
 ___
 ## Technologies
 Project is created with:
-* colorama==0.4.4
-* loguru==0.5.3
-* notify-py==0.3.3
-* pygame==2.1.2
-* win32-setctime==1.0.4
+* PyQt5==5.15.7
+* PyQt5-Qt5==5.15.2
+* PyQt5-sip==12.11.0
+
 
 ___
 ## Setup Windows
 Open CMD or PowerShell in the folder and type:
 ```
 > virtualenv .venv
-> \.venv\Scripts\activate.bat
+> .\.venv\Scripts\activate.bat
 > pip install -r requirements.txt
 > python src\ColorBox.py
 ```
@@ -64,7 +63,7 @@ $ python3 src/ColorBox.py
 ```
 
 ___
-## Usage
+## Usage (TODO)
 <div dir="rtl">
 دستورالعمل ساعت آنالوگ:
 
