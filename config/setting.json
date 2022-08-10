@@ -1,0 +1,44 @@
+{
+    "actions": {
+        "exit": ["enter", "return"],
+        "maximize": ["up"],
+        "minimize": ["Down"]
+    },
+    "window": {
+        "background": "rgb(0, 0, 0)",
+        "size": "500"
+    },
+    "analogClock": {
+        "hourHand": {
+            "color": "yellow",
+            "width": 10,
+            "size": 0.75
+        },
+        "minuteHand": {
+            "color": "green",
+            "width": 5,
+            "size": 1
+        },
+        "secondHand": {
+            "color": "red",
+            "width": 1,
+            "size": 1
+        },
+        "sign": {
+            "color": "green",
+            "size": 2
+        }
+    },
+    "digitalClock": {
+        "fontColor": "white",
+        "fontSize": "20px"
+    },
+    "dateLabel": {
+        "fontColor": "white",
+        "fontSize": "15px"
+    },
+    "weekdayLabel": {
+        "fontColor": "white",
+        "fontSize": "15px"
+    }
+}
